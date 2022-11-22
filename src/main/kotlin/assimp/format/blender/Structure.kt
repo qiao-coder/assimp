@@ -669,7 +669,7 @@ class Structure (val db: FileDatabase) {
             We don't need to make this distinction, our algorithm works regardless where the data is stored.    */
         val it = db.entries.firstOrNull { it.address >= ptrVal } ?: run {
 	        /*  This is crucial, pointers may not be invalid. This is either a corrupted file or an attempted attack.   */
-	        val last = db.entries.maxBy { it.address }!!
+	        val last = db.entries.maxByOrNull { it.address }!!
 	        throw Exception("Failure resolving pointer 0x${ptrVal.asHexString}, no file block falls into this address range. " +
 	                    "The last block starts at 0x${last.address.asHexString} and ends at 0x${(last.address + last.size).asHexString}")
         }
