@@ -1,11 +1,12 @@
+import magik.github
 import org.gradle.api.attributes.java.TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE
 import org.gradle.internal.os.OperatingSystem.*
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URL
 
 plugins {
     java
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version embeddedKotlinVersion
+    id("elect86.magik") version "0.3.1"
     `maven-publish`
     //    id "org.jetbrains.kotlin.kapt" version "1.3.10"
     id("org.jetbrains.dokka") version "1.4.10"
@@ -34,17 +35,23 @@ repositories {
     mavenCentral()
     jcenter()
     maven("https://jitpack.io")
+    github("kotlin-graphics/mary")
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
 
-    implementation("$kx:kotlin-unsigned:$unsignedVersion")
-    implementation("$kx:kool:$koolVersion")
-    implementation("$kx:glm:$glmVersion")
-    implementation("$kx:gli:$gliVersion")
-    implementation("$kx:uno-sdk:$unoVersion")
+//    implementation("$kx:kotlin-unsigned:$unsignedVersion")
+//    implementation("$kx:kool:$koolVersion")
+//    implementation("$kx:glm:$glmVersion")
+//    implementation("$kx:gli:$gliVersion")
+//    implementation("$kx:uno-sdk:$unoVersion")
+    implementation("kotlin.graphics:unsigned:3.3.31")
+    implementation("kotlin.graphics:glm:0.9.9.1-5")
+    implementation("kotlin.graphics:gli:0.8.3.0-18")
+    implementation("kotlin.graphics:kool:0.9.71")
+    implementation("kotlin.graphics:uno:0.7.17")
 
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
     listOf("", "-glfw", "-jemalloc", "-openal", "-opengl", "-stb").forEach {
@@ -75,12 +82,17 @@ tasks {
         }
     }
 
-    withType<KotlinCompile>().all {
+//    withType<KotlinCompile>().all {
+//        kotlinOptions {
+//            jvmTarget = "11"
+//            freeCompilerArgs += listOf("-Xinline-classes", "-Xopt-in=kotlin.RequiresOptIn")
+//        }
+//        sourceCompatibility = "11"
+//    }
+    withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
         kotlinOptions {
-            jvmTarget = "11"
-            freeCompilerArgs += listOf("-Xinline-classes", "-Xopt-in=kotlin.RequiresOptIn")
+            freeCompilerArgs += listOf("-opt-in=kotlin.RequiresOptIn")
         }
-        sourceCompatibility = "11"
     }
 
 //    compileJava { // this is needed because we have a separate compile step in this example with the 'module-info.java' is in 'main/java' and the Kotlin code is in 'main/kotlin'
@@ -133,4 +145,4 @@ publishing {
 }
 
 // == Add access to the 'modular' variant of kotlin("stdlib"): Put this into a buildSrc plugin and reuse it in all your subprojects
-configurations.all { attributes.attribute(TARGET_JVM_VERSION_ATTRIBUTE, 11) }
+configurations.all { attributes.attribute(TARGET_JVM_VERSION_ATTRIBUTE, 8) }

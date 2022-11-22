@@ -1994,7 +1994,7 @@ class Converter(val out: AiScene, val doc: Document) {
             so max(of all keyframe lists) should be a good estimate.    */
         val keys = KeyTimeList()
 
-        val estimate = inputs.maxBy { it.first.size }?.first?.size ?: 0
+        val estimate = inputs.maxByOrNull { it.first.size }?.first?.size ?: 0
 
         keys.ensureCapacity(estimate)
 
