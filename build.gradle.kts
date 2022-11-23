@@ -52,7 +52,8 @@ dependencies {
     implementation("com.github.qiao-coder:glm:0.9.9.1-6")
     implementation("kotlin.graphics:gli:0.8.3.0-18")
     implementation("kotlin.graphics:kool:0.9.71")
-    implementation("kotlin.graphics:uno:0.7.17")
+//    implementation("kotlin.graphics:uno:0.7.17")
+    implementation("com.github.qiao-coder:uno-sdk:0.7.18")
 
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
     listOf("", "-glfw", "-jemalloc", "-openal", "-opengl", "-stb").forEach {
